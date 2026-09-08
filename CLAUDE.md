@@ -77,8 +77,24 @@ Use the direct refs for all MCP-driven wiring.
 
 **Prefabs** (`Assets/Prefabs/OrderPicking/`):
 - `Tote_OrderPicking` — BoxCollider trigger + ToteCounter (SKU-1001 ×3).
-- `PickItem_OrderPicking` — AutoHand Grabbable + SkuItem + TriggerIdentity.
+- `PickItem_OrderPicking` — AutoHand Grabbable + SkuItem + TriggerIdentity. **Base for the products.**
 - `Scanner_OrderPicking` — scanner FBX (scale 0.13), Grabbable + ScannerTool + Muzzle child.
+
+**Per-product pickable prefabs** (`Assets/Prefabs/OrderPicking/Products/`, cloned from the base — each
+has the full grab stack + SkuItem/TriggerIdentity set, and a **cube placeholder mesh to swap for a real
+model**): `PickItem_BlueWidget500` (SKU-1001), `PickItem_BlueWidget750` (SKU-2002), `PickItem_RubberGasket40`
+(SKU-2007), `PickItem_SteelBracket90` (SKU-3003), `PickItem_RedWidget500` (SKU-5099), `PickItem_GreenWidget500`
+(SKU-5005). **To add a model:** swap the MeshFilter mesh + material (or nest the FBX and drop the cube),
+refit the BoxCollider, re-record the GrabbablePose if the shape changed a lot.
+
+**Scene pickables are now instances of these product prefabs** (re-pointed from the old placeholder cubes):
+`lower/M1_Prod_A1/A2/A3`→BlueWidget500, `lower/M1_Decoy_1/2`→BlueWidget750, `PickArea_B/M1_Prod_B1/B2`→BlueWidget750,
+`B3/B4/B5/B6`→RubberGasket40, `PickArea_C/M1_Prod_C1`→SteelBracket90, `M1_Tote/M1_MisPick_Wrong`→RedWidget500,
+`M1_MisPick_Correct`→GreenWidget500 — each kept its exact position/rotation/scale (0.15) + kinematic flag; SKU-based
+tote/scan/mis-pick logic unaffected. **Duplication fixed:** the A-aisle previously had a duplicate `Bin/` set
+(y0.571) alongside `lower/` (y0.182) — the `Bin/` copies were deleted so counts are correct (3× SKU-1001, etc.).
+Only `M1_PathReview_Confirm` (the M1_08 confirm marker, not a product) is still a cube — swap or retire it separately.
+Instantiate a product prefab via `manage_gameobject create` with `prefab_path`+`save_as_prefab:false`.
 
 **Scene** (player start ≈ -10,0,24; picking area to west / -X):
 - Shelves: `WarehouseLayout_FromSVG/Picking/Aisle_{A,B,C}_Shelf_SVG (2)`
