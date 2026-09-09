@@ -94,8 +94,15 @@ were removed and the BoxCollider refit (~0.6×1.33×0.6). Colors = 3 tinted URP-
 (`Mat_WidgetBlue/Red/Green`, duplicated from the fbx's `Material.001`, `_BaseColor` tinted) — Blue serves
 500 & 750. **Single material caveat:** the bottle texture is one white-body/red-cap map, so `_BaseColor`
 tints the whole bottle — the red cap goes dark on blue/green (fix later via a grey-cap texture or a 2nd
-material). GrabbablePose re-record + final size/tint tuning are in-headset. (Gasket `40_mm_industrial` and
-bracket `90_mm_L_shaped_stee...` FBXs are imported but not yet applied — those prefabs are still cubes.)
+material). GrabbablePose re-record + final size/tint tuning are in-headset.
+
+**Gasket + bracket models applied too:** `PickItem_RubberGasket40` nests `40_mm_industrial/...ru...fbx`
+(`GasketMesh`, rotation identity so the ring lies flat, scale 18 ≈ 4-5 cm) and `PickItem_SteelBracket90`
+nests `90_mm_L_shaped_stee...fbx` (`BracketMesh`, rotation X270 upright, scale 32 ≈ 9 cm). Each keeps its
+own textured `Material.001` (no tint needed — real gasket/bracket look), cube renderers removed, BoxCollider
+refit (gasket 0.35×0.12×0.35, bracket 0.58×0.62×0.22). Verified via a floating-probe screenshot (L-bracket
+with bolt holes; orange rubber ring). **→ ALL pickable products now use real models; only `M1_PathReview_Confirm`
+(the M1_08 confirm marker) is still a cube.** GrabbablePose re-record + size tuning in-headset.
 
 **Scene pickables are now instances of these product prefabs** (re-pointed from the old placeholder cubes):
 `lower/M1_Prod_A1/A2/A3`→BlueWidget500, `lower/M1_Decoy_1/2`→BlueWidget750, `PickArea_B/M1_Prod_B1/B2`→BlueWidget750,
