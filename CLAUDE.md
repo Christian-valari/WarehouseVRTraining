@@ -124,11 +124,11 @@ Instantiate a product prefab via `manage_gameobject create` with `prefab_path`+`
 
 **Tutorial modal placement (world-space `Canvas/OrderPicking`):** the 10 M1 panels are world-space UI and
 were all stacked off to the side at ≈(9.5,1.29,4.25), far from the tasks. Repositioned so each modal sits
-where its task happens, at eye height (y≈1.4), facing +z (identity rotation) — the trainee always faces −z
+where its task happens, at eye height (y≈1.2), facing +z (identity rotation) — the trainee always faces −z
 (spawn `Pos1` = world (0,0,26.2) rot y180, walks the corridor toward the aisles). Since only one modal
-shows at a time, same-area steps share a spot: **M1_01/02/03 → start** at world (0,1.4,23.5) (in front of
-spawn); **M1_04/05 + M1_07–M1_10 → A-aisle/tote** at world (1.0,1.4,3.3); **M1_06 → B/C aisle** at world
-(0.1,1.4,12.25) — midway between B (z9) and C (z15.5) — with rotation **y180 (faces −z)** — B/C is the one place the trainee approaches from the
+shows at a time, same-area steps share a spot: **M1_01/02/03 → start** at world (0,1.2,23.5) (in front of
+spawn); **M1_04/05 + M1_07–M1_10 → A-aisle/tote** at world (1.0,1.2,3.3); **M1_06 → B/C aisle** at world
+(0.1,1.2,12.25) — midway between B (z9) and C (z15.5) — with rotation **y180 (faces −z)** — B/C is the one place the trainee approaches from the
 opposite side (walking +z up from the tote), so its modal faces −z, unlike the +z-facing A-aisle/start
 modals. Local x = world x + 4 (OrderPicking is at world −4,0,0). Verified via spawn-view, A-aisle-view, and
 B-aisle-approach screenshots. Fine-tune heights/spots in-headset.
