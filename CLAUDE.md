@@ -101,8 +101,8 @@ material). GrabbablePose re-record + final size/tint tuning are in-headset.
 nests `90_mm_L_shaped_stee...fbx` (`BracketMesh`, rotation X270 upright, scale 32 ≈ 9 cm). Each keeps its
 own textured `Material.001` (no tint needed — real gasket/bracket look), cube renderers removed, BoxCollider
 refit (gasket 0.35×0.12×0.35, bracket 0.58×0.62×0.22). Verified via a floating-probe screenshot (L-bracket
-with bolt holes; orange rubber ring). **→ ALL pickable products now use real models; only `M1_PathReview_Confirm`
-(the M1_08 confirm marker) is still a cube.** GrabbablePose re-record + size tuning in-headset.
+with bolt holes; orange rubber ring). **→ ALL pickable products now use real models, and the M1_08 confirm
+marker has been RETIRED — no placeholder cubes remain in the scene.** GrabbablePose re-record + size tuning in-headset.
 
 **Scene pickables are now instances of these product prefabs** (re-pointed from the old placeholder cubes):
 `lower/M1_Prod_A1/A2/A3`→BlueWidget500, `lower/M1_Decoy_1/2`→BlueWidget750, `PickArea_B/M1_Prod_B1/B2`→BlueWidget750,
@@ -145,7 +145,7 @@ Instantiate a product prefab via `manage_gameobject create` with `prefab_path`+`
 | M1_05 | Quantity Pick (×3) | `TRIGGER_M1_PickQuantity_3` | ✅ fully wired & working |
 | M1_06 | Multi-Line Order | `TRIGGER_M1_MultiLine_AllPicked` | ✅ wired (chain below) |
 | M1_07 | Error Recovery | `TRIGGER_M1_RemoveMisPick`, `TRIGGER_M1_ReplaceCorrectItem` | ✅ wired (chain below) |
-| M1_08 | Path Efficiency Review | `TRIGGER_M1_PathReviewConfirmed` | ✅ wired — grab-confirm completion + real route overlay (recorder → green optimal vs amber actual lines; chain below) |
+| M1_08 | Path Efficiency Review | `TRIGGER_M1_PathReviewConfirmed` | ✅ wired — real route overlay + auto-complete ~1.5s after it shows (grab marker retired; chain below) |
 | M1_09 | Assessment | `TRIGGER_M1_AssessmentComplete` | ✅ wired — ≥80% pass gate + modal hidden during quiz + fail/retry screen (chain below) |
 | M1_10 | Complete | *(none)* | ✅ no challenge |
 
@@ -224,16 +224,17 @@ ToteCounter → zero interference with M1_05/06. **Headset tuning TODO:** item h
 (correct item floats — add a stand/shelf spot); confirm kinematic items are grabbable.
 Runtime remove-then-replace test pending in-headset.
 
-**M1_08 chain (verified) — PLACEHOLDER confirm:**
+**M1_08 chain (verified) — auto-complete after review (grab marker RETIRED):**
 ```
-grab M1_PathReview_Confirm marker (AutoHand Grabbable.OnGrabEvent)
-  → GrabChallengeTrigger → Trigger_M1_PathReview (TRIGGER_M1_PathReviewConfirmed)
-  → M1_08 panel challenge completes
+M1_08 opens → RouteReviewPresenter.OnEnable → StopRecording + ShowOverlay
+  → after _autoCompleteDelay (1.5s) → _completeTrigger.OnTriggerComplete()
+  → Trigger_M1_PathReview (TRIGGER_M1_PathReviewConfirmed) → M1_08 completes → "Next"
 ```
-Completion is unchanged — reused `GrabChallengeTrigger` on `M1_PathReview_Confirm` (kinematic grabbable,
-cloned from `lower/M1_Prod_A1`, SkuItem "CONFIRM", child of M1_Tote local (0.71,1,0.589) ≈ world
-(1.3,1,2.9)) still fires `TRIGGER_M1_PathReviewConfirmed`. Headset tuning: marker floats (add a stand);
-confirm grabbable.
+The old `M1_PathReview_Confirm` grab-cube (and its `GrabChallengeTrigger`) was **deleted** — the last
+placeholder cube in the scene. Completion is now driven by `RouteReviewPresenter._completeTrigger`→
+`Trigger_M1_PathReview` (still in the M1_08 panel list): the presenter shows the overlay, then a ~1.5s
+coroutine fires the trigger (the delay lets the trainee see the lines AND lets the framework arm the
+trigger — arming happens a frame or two after the panel enables). `_autoCompleteDelay` is tunable.
 
 **Route overlay NOW BUILT (was a placeholder):** the real optimal-vs-actual route comparison. Three new
 scripts (TrainingInteractions):
