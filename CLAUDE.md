@@ -122,6 +122,16 @@ Instantiate a product prefab via `manage_gameobject create` with `prefab_path`+`
   `M1_Prod_B3/B4/B5/B6` (SKU-2007); `PickArea_C` → `Bin_C0301`, `M1_Prod_C1` (SKU-3003).
 - `M1_Tote` — 4 ToteCounters (see M1_06 wiring), `M1_Scanner`.
 
+**Tutorial modal placement (world-space `Canvas/OrderPicking`):** the 10 M1 panels are world-space UI and
+were all stacked off to the side at ≈(9.5,1.29,4.25), far from the tasks. Repositioned so each modal sits
+where its task happens, at eye height (y≈1.4), facing +z (identity rotation) — the trainee always faces −z
+(spawn `Pos1` = world (0,0,26.2) rot y180, walks the corridor toward the aisles). Since only one modal
+shows at a time, same-area steps share a spot: **M1_01/02/03 → start** at world (0,1.4,23.5) (in front of
+spawn); **M1_04–M1_10 → A-aisle/tote** at world (1.0,1.4,3.3) (the tote sits beside the A-aisle; M1_06's
+"go to B/C" instruction stays at this previous spot per design). Local x = world x + 4 (OrderPicking is at
+world −4,0,0). Verified via spawn-view + A-aisle-view screenshots. Fine-tune heights/spots in-headset.
+No teleport is used (`_teleportPlayer=false`), so the trainee walks freely.
+
 **Wrist pick list:** `Handheld UI` under `RobotHand (L)` — world-space Canvas, title
 "Picking List", table under `Text Holder` (VerticalLayoutGroup) with a `Header` row
 (SKU / ID / Description / Location / Quantity) + `Product` rows.
