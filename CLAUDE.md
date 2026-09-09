@@ -87,6 +87,16 @@ model**): `PickItem_BlueWidget500` (SKU-1001), `PickItem_BlueWidget750` (SKU-200
 (SKU-5005). **To add a model:** swap the MeshFilter mesh + material (or nest the FBX and drop the cube),
 refit the BoxCollider, re-record the GrabbablePose if the shape changed a lot.
 
+**Widget bottle model applied (the 4 widgets share ONE mesh):** `Assets/Models/cylindrical/cylindrical.fbx`
+(Meshy bottle) is nested as a `BottleMesh` child in each of the 4 widget prefabs (local rot X270 to
+stand upright, scale 70 = ~0.2 m; 750 uses 80 = slightly larger); the base cube's MeshFilter/MeshRenderer
+were removed and the BoxCollider refit (~0.6×1.33×0.6). Colors = 3 tinted URP-Lit materials in `Products/`
+(`Mat_WidgetBlue/Red/Green`, duplicated from the fbx's `Material.001`, `_BaseColor` tinted) — Blue serves
+500 & 750. **Single material caveat:** the bottle texture is one white-body/red-cap map, so `_BaseColor`
+tints the whole bottle — the red cap goes dark on blue/green (fix later via a grey-cap texture or a 2nd
+material). GrabbablePose re-record + final size/tint tuning are in-headset. (Gasket `40_mm_industrial` and
+bracket `90_mm_L_shaped_stee...` FBXs are imported but not yet applied — those prefabs are still cubes.)
+
 **Scene pickables are now instances of these product prefabs** (re-pointed from the old placeholder cubes):
 `lower/M1_Prod_A1/A2/A3`→BlueWidget500, `lower/M1_Decoy_1/2`→BlueWidget750, `PickArea_B/M1_Prod_B1/B2`→BlueWidget750,
 `B3/B4/B5/B6`→RubberGasket40, `PickArea_C/M1_Prod_C1`→SteelBracket90, `M1_Tote/M1_MisPick_Wrong`→RedWidget500,
